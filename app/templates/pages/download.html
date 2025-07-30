@@ -1,0 +1,936 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX62JHH1R4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MX62JHH1R4');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Download Files - Temp-File</title>
+    <meta name="theme-color" content="#1f1f1f">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <!-- Toasts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --color-primary: #c8c3fa;
+            --color-primary-dark: #b4b0e2;
+            --color-primary-light: #dfdcfc;
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #1c1c1c;
+            --color-bg-surface: #1e1e1e;
+            --color-bg-input: #2b2b2b;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #b3b3b3;
+            --color-text-muted: #5e5e5e;
+            --color-border: #333;
+            --color-success: #95eab8;
+            --color-danger: #efaca5;
+            --color-warning: #ead994;
+            --color-info: #bddaed;
+
+            /* Typography */
+            --font-primary: 'Varela Round', sans-serif;
+            --font-heading: 'Ubuntu', sans-serif;
+
+            /* Spacing */
+            --spacing-xs: 0.125rem;
+            --spacing-sm: 0.25rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.5rem;
+            --spacing-3xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 4px;
+            border: 2px solid #1e1e1e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            scrollbar-width: thin;
+            scrollbar-color: #444 #1e1e1e;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .toast--apple-dark {
+            background: #303030;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 14px 20px;
+        }
+
+        .toast--apple-dark .material-symbols-outlined {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
+            color: var(--color-primary-dark)
+        }
+
+        .toast--apple-dark .toastify-progress-bar {
+            background: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: rgba(31, 31, 31, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-decoration: none;
+            transition: transform var(--transition-fast);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-md);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .nav-link .section-icon {
+            margin-right: 0.5rem;
+            line-height: 1;              
+        }
+
+        .section-icon {
+            font-size: 1em;
+            line-height: 1;
+            margin-right: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 1rem;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.1);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-2xl) var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Download Section */
+        .download-section {
+            width: 100%;
+            max-width: 40rem;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .download-container {
+            background: var(--color-bg-surface);
+            padding: var(--spacing-3xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+            opacity: 0.5;
+        }
+
+        .download-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        /* Link Display */
+        .link-copy {
+            background: var(--color-bg-input);
+            border: 2px dashed var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .link-copy:hover {
+            border-color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.05);
+        }
+
+        .link-copy:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(200, 195, 250, 0.2);
+        }
+
+        .generated-link {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            background: linear-gradient(
+                90deg,
+                rgba(200, 195, 250, 0.3),
+                var(--color-primary-light),
+                rgba(200, 195, 250, 0.3)
+            );
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 50%; }
+            50% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        /* Files Table */
+        .files-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            background: var(--color-bg-surface);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .files-table thead {
+            background: var(--color-bg-input);
+        }
+
+        .files-table th {
+            padding: var(--spacing-md) var(--spacing-lg);
+            text-align: left;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--color-primary);
+            font-size: 1.1rem;
+            border-bottom: 1px solid var(--color-border);
+        }
+
+        .files-table th:last-child {
+            text-align: center;
+            width: 80px;
+        }
+
+        .files-table td {
+            padding: var(--spacing-lg);
+            color: var(--color-text-primary);
+            border-bottom: 1px solid rgba(200, 195, 250, 0.1);
+            vertical-align: middle;
+        }
+
+        .files-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .files-table tr:hover {
+            background: rgba(200, 195, 250, 0.05);
+        }
+
+        .files-table td:last-child {
+            text-align: center;
+        }
+
+        /* File Info */
+        .file-name {
+            font-weight: 500;
+            margin-bottom: var(--spacing-xs);
+        }
+
+        .file-size {
+            font-size: 0.9rem;
+            color: var(--color-text-secondary);
+        }
+
+        /* Download Button */
+        .download-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2.5rem;
+            height: 2.5rem;
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(200, 195, 250, 0.3);
+        }
+
+        .download-btn:hover::before {
+            left: 100%;
+        }
+
+        .download-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(200, 195, 250, 0.3);
+        }
+
+        .download-icon {
+            display: block;
+            font-size: 1.25rem;
+            line-height: 1;
+            width: auto;
+            height: auto;
+        }
+
+        /* About Section */
+        .about-section {
+            width: 100%;
+            max-width: 50rem;
+            text-align: center;
+        }
+
+        .about-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .about-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            max-width: 20rem;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transform: translateX(110%);
+            animation: slideIn var(--transition-normal) ease-out forwards,
+                       fadeOut var(--transition-slow) ease-in forwards 4.5s;
+        }
+
+        .toast-content-wrapper {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            gap: var(--spacing-sm);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            animation: progress 5s linear forwards;
+        }
+
+        .toast-success { background: var(--color-success); }
+        .toast-success .toast-progress { background: #2ecc71; }
+
+        .toast-danger { background: var(--color-danger); }
+        .toast-danger .toast-progress { background: #e74c3c; }
+
+        .toast-info { background: var(--color-info); }
+        .toast-info .toast-progress { background: #3498db; }
+
+        .toast-warning { background: var(--color-warning); }
+        .toast-warning .toast-progress { background: #f1c40f; }
+
+        @keyframes slideIn {
+            0% { transform: translateX(110%); }
+            75% { transform: translateX(-5%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes progress {
+            0% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: var(--spacing-3xl);
+            color: var(--color-text-secondary);
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--color-text-muted);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .empty-title {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .empty-description {
+            color: var(--color-text-muted);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-header {
+                padding: var(--spacing-md);
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .nav-links {
+                gap: var(--spacing-md);
+            }
+
+            .main-content {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .download-container {
+                padding: var(--spacing-xl);
+            }
+
+            .download-title,
+            .about-title {
+                font-size: 1.75rem;
+            }
+
+            .files-table th,
+            .files-table td {
+                padding: var(--spacing-sm) var(--spacing-md);
+            }
+
+            .files-table th {
+                font-size: 1rem;
+            }
+
+            .toast {
+                top: var(--spacing-md);
+                right: var(--spacing-md);
+                left: var(--spacing-md);
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.25rem;
+            }
+
+            .nav-link {
+                font-size: 1rem;
+                padding: var(--spacing-xs) var(--spacing-sm);
+            }
+
+            .download-container {
+                padding: var(--spacing-lg);
+            }
+
+            .download-title,
+            .about-title {
+                font-size: 1.5rem;
+            }
+
+            .generated-link {
+                font-size: 1rem;
+            }
+        }
+
+        /* Accessibility Improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus visible for better keyboard navigation */
+        .download-btn:focus-visible,
+        .nav-link:focus-visible,
+        .link-copy:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-primary: #ffffff;
+                --color-bg-surface: #000000;
+                --color-text-primary: #ffffff;
+                --color-border: #ffffff;
+            }
+        }
+
+        /* Screen reader only styles */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" role="banner">
+        <div class="header-content">
+            <a href="/" class="logo" aria-label="Temp-File Home">
+                <img src="{{ url_for('static', filename='assets/icon.png') }}" alt="" class="logo-img" role="presentation">
+                <span class="logo-text">Temp-File</span>
+            </a>
+
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
+                <div onclick="showToast('This feature is under development!', 'info', 5000);" role="button" tabindex="0"
+                     onkeydown="if(event.key==='Enter'||event.key===' ') showToast('This feature is under development!', 'info', 5000);"
+                     aria-label="API - Coming soon">
+                     <span class="nav-link">
+                        <span class="material-symbols-outlined section-icon">code</span>
+                        API
+                      </span>
+                </div>
+                <a href="/contact-us" class="nav-link">
+                    <span class="material-symbols-outlined section-icon">mail_outline</span>
+                    Contact Us
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" role="main">
+        <section class="download-section" aria-labelledby="download-title">
+            <div class="download-container">
+              <h1 class="download-title" id="download-title">Download Files</h1>
+    
+              <div class="link-copy" onclick="copyToClipboard()">
+                {# Build the full shareable URL #}
+                {% set share_url = request.url %}
+                <a href="{{ share_url }}"
+                   id="url"
+                   class="generated-link"
+                   aria-label="Shareable download link">
+                  {{ share_url }}
+                </a>
+              </div>
+    
+              {# If there are files, show the table; else show empty state #}
+              {% if files %}
+                <table class="files-table" role="table" aria-label="Available files for download">
+                  <thead>
+                    <tr>
+                      <th scope="col">File Details</th>
+                      <th scope="col">Download</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for file in files %}
+                      <tr>
+                        <td>
+                          <div class="file-name">{{ file.name }}</div>
+                          {# Convert bytes → KB or MB on server or here: #}
+                          <div class="file-size">
+                            {{ (file.size / 1024)|round(2) }} KB
+                          </div>
+                        </td>
+                        <td>
+                          {# You'll need a route to serve individual files, e.g. 'download_file' #}
+                          <a href="{{ url_for('file.download_file',
+                                                unique_string=unique_string,
+                                                filename=file.name) }}"
+                                class="download-btn"
+                                aria-label="Download {{ file.name }}"
+                                download>
+                            <span class="material-symbols-outlined download-icon">download</span>
+                        </a>
+                        </td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              {% else %}
+                <div class="empty-state">
+                  <div class="empty-icon">
+                    <span class="material-symbols-outlined">folder_open</span>
+                  </div>
+                  <h2 class="empty-title">No Files Found</h2>
+                  <p class="empty-description">
+                    The files at this link may have expired or been removed.
+                  </p>
+                </div>
+              {% endif %}
+            </div>
+        </section>
+
+        <section class="about-section" aria-labelledby="about-title">
+            <h2 class="about-title" id="about-title">About Temp-File</h2>
+            <p class="about-description">
+                Temp-File is your go-to service for quick and temporary file sharing.
+                Simply upload your file and get a shareable link in seconds.
+                Designed for speed, simplicity, and a sleek modern experience.
+            </p>
+        </section>
+    </main>
+
+    <!-- Screen reader only content -->
+    <div class="sr-only" aria-live="polite" id="screen-reader-announcements"></div>
+
+    <script>
+        function copyToClipboard() {
+            const link = document.getElementById('url');
+            const text = link.textContent;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showToast("URL copied to clipboard!", "success", 5000);
+                    announceToScreenReader("URL copied to clipboard");
+                }).catch(function(error) {
+                    console.error('Error copying text: ', error);
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast("URL copied to clipboard!", "success", 5000);
+                announceToScreenReader("URL copied to clipboard");
+            } catch (error) {
+                console.error('Fallback: Error copying text: ', error);
+                showToast("Failed to copy URL", "danger", 5000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        // Toast notification system
+        let icon = {
+            success: '<span class="material-symbols-outlined">task_alt</span>',
+            danger: '<span class="material-symbols-outlined">error</span>',
+            warning: '<span class="material-symbols-outlined">warning</span>',
+            info: '<span class="material-symbols-outlined">info</span>',
+        };
+
+        const symbolIcons = {
+            info:    'info',
+            success: 'check_circle',
+            warning: 'warning',
+            error:   'error'
+        };
+
+
+        const showToast = (message = "Sample message", type = "info", duration = 4000) => {
+            if (!symbolIcons[type]) type = "info";
+
+            const content = document.createElement('div');
+            content.style.display = 'flex';
+            content.style.alignItems = 'center';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.classList.add('material-symbols-outlined');
+            iconSpan.textContent = symbolIcons[type];
+            iconSpan.style.marginRight = '8px';
+
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = message;
+            msgSpan.style.fontFamily = 'var(--font-primary)';
+
+            content.append(iconSpan, msgSpan);
+
+            Toastify({
+                node: content,
+                duration,
+                close: false,
+                gravity: 'bottom',
+                position: 'center',
+                stopOnFocus: true,
+                className: 'toast--apple-dark',
+                style: {
+                maxWidth: '400px',
+                backdropFilter: 'blur(10px)'
+                },
+                onClick: () => console.log("Toast clicked!")
+            }).showToast();
+        };
+
+        function announceToScreenReader(message) {
+            const announcer = document.getElementById('screen-reader-announcements');
+            announcer.textContent = message;
+            setTimeout(() => {
+                announcer.textContent = '';
+            }, 1000);
+        }
+        document.addEventListener('keydown', (event) => {
+            if ((event.key === 'Enter' || event.key === ' ') && event.target.hasAttribute('role') && event.target.getAttribute('role') === 'button') {
+                event.preventDefault();
+                event.target.click();
+            }
+        });
+
+        function updateFilesList(files) {
+            const tbody = document.getElementById('files-tbody');
+            const emptyState = document.getElementById('empty-state');
+            const table = document.querySelector('.files-table');
+
+            if (!files || files.length === 0) {
+                table.style.display = 'none';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            tbody.innerHTML = '';
+
+            files.forEach(file => {
+                const row = document.createElement('tr');
+                const sizeInKB = Math.round(file.size / 1024 * 100) / 100;
+
+                row.innerHTML = `
+                    <td>
+                        <div class="file-name">${escapeHtml(file.name)}</div>
+                        <div class="file-size">${sizeInKB} KB</div>
+                    </td>
+                    <td>
+                        <a href="${escapeHtml(file.downloadUrl)}" class="download-btn"
+                           aria-label="Download ${escapeHtml(file.name)}"
+                           download>
+                            <span class="material-symbols-outlined download-icon">download</span>
+                        </a>
+                    </td>
+                `;
+
+                tbody.appendChild(row);
+            });
+
+            table.style.display = 'table';
+            emptyState.style.display = 'none';
+        }
+
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        function updateUrl(uniqueString) {
+            const urlElement = document.getElementById('url');
+            const newUrl = `temp-file.cloud/${uniqueString}`;
+            urlElement.textContent = newUrl;
+            urlElement.href = newUrl;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const pathParts = window.location.pathname.split('/');
+            const uniqueString = pathParts[pathParts.length - 1];
+
+            if (uniqueString && uniqueString !== 'download.html') {
+                updateUrl(uniqueString);
+            }
+        });
+    </script>
+</body>
+</html>

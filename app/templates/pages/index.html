@@ -1,0 +1,1330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX62JHH1R4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MX62JHH1R4');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Temp File Cloud offers secure and easy-to-use file storage and sharing solutions. Quickly upload, store, and share your files with confidence and simplicity.">
+    <title>Fast & Secure Temporary File Uploads | Temp-File</title>
+    <meta name="theme-color" content="#1f1f1f">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <!-- Toasts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <!-- reCAPTCHA -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --color-primary: #c8c3fa;
+            --color-primary-dark: #b4b0e2;
+            --color-primary-light: #dfdcfc;
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #1c1c1c;
+            --color-bg-surface: #1e1e1e;
+            --color-bg-input: #2b2b2b;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #b3b3b3;
+            --color-text-muted: #5e5e5e;
+            --color-border: #333;
+            --color-success: #95eab8;
+            --color-danger: #efaca5;
+            --color-warning: #ead994;
+            --color-info: #bddaed;
+
+            /* Typography */
+            --font-primary: 'Varela Round', sans-serif;
+            --font-heading: 'Ubuntu', sans-serif;
+
+            /* Spacing */
+            --spacing-xs: 0.125rem;
+            --spacing-sm: 0.25rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.5rem;
+            --spacing-3xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 4px;
+            border: 2px solid #1e1e1e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            scrollbar-width: thin;
+            scrollbar-color: #444 #1e1e1e;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .toast--apple-dark {
+            background: #303030;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 14px 20px;
+        }
+
+        .toast--apple-dark .material-symbols-outlined {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
+            color: var(--color-primary-dark)
+        }
+
+        .toast--apple-dark .toastify-progress-bar {
+            background: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: rgba(31, 31, 31, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-decoration: none;
+            transition: transform var(--transition-fast);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-md);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .nav-link .section-icon {
+            margin-right: 0.5rem;
+            line-height: 1;              
+        }
+
+        .section-icon {
+            font-size: 1em;
+            line-height: 1;
+            margin-right: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 1rem;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.1);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero-section {
+            width: 100%;
+            text-align: center;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .hero-title {
+            font-family: var(--font-heading);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-xl);
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-2xl);
+            margin-bottom: var(--spacing-3xl);
+            flex-wrap: wrap;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .feature-icon {
+            color: var(--color-primary);
+            font-size: 1.25rem;
+        }
+
+        /* Upload Container */
+        .upload-section {
+            width: 100%;
+            max-width: 28rem;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .upload-container {
+            background: var(--color-bg-surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .upload-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+            opacity: 0.5;
+        }
+
+        .upload-container:hover {
+            transform: translateY(-0.25rem);
+            border-color: rgba(200, 195, 250, 0.2);
+        }
+
+        .upload-title {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+        }
+
+        .upload-icon {
+            font-size: 2rem;
+            color: var(--color-primary);
+        }
+
+        /* File Input Styling */
+        .file-input-wrapper {
+            position: relative;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .file-input {
+            width: 100%;
+            padding: var(--spacing-xl);
+            border: 2px dashed var(--color-primary);
+            border-radius: var(--radius-lg);
+            background: var(--color-bg-input);
+            color: var(--color-text-primary);
+            font-family: var(--font-primary);
+            font-size: 1rem;
+            transition: all var(--transition-normal);
+            cursor: pointer;
+        }
+
+        .file-input:hover {
+            border-color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.05);
+        }
+
+        .file-input:focus {
+            outline: none;
+            border-color: var(--color-primary-light);
+            box-shadow: 0 0 0 3px rgba(200, 195, 250, 0.2);
+        }
+
+        /* reCAPTCHA Container */
+        .recaptcha-container {
+            display: flex;
+            justify-content: center;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        /* Terms Agreement */
+        .terms-agreement {
+            font-size: 0.875rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-lg);
+            line-height: 1.5;
+        }
+
+        .terms-link {
+            color: var(--color-primary);
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+        }
+
+        .terms-link:hover {
+            color: var(--color-primary-light);
+        }
+
+        /* Upload Button - NO BOX SHADOW */
+        .upload-btn {
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-dark));
+            color: var(--color-bg-surface);
+            border: none;
+            padding: var(--spacing-lg) var(--spacing-2xl);
+            border-radius: var(--radius-lg);
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-normal);
+            position: relative;
+            overflow: hidden;
+            min-width: 8rem;
+        }
+
+        .upload-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left var(--transition-slow);
+        }
+
+        .upload-btn:hover {
+            transform: translateY(-2px);
+            /* Removed box-shadow */
+        }
+
+        .upload-btn:hover::before {
+            left: 100%;
+        }
+
+        .upload-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(200, 195, 250, 0.3);
+        }
+
+        .upload-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .upload-btn:disabled:hover {
+            transform: none;
+        }
+
+        /* Result Container */
+        .result-container {
+            background: var(--color-bg-surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            text-align: center;
+            border: 1px solid rgba(200, 195, 250, 0.1);
+        }
+
+        .result-title {
+            font-family: var(--font-heading);
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .copy-suggestion {
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            text-decoration: underline;
+            font-size: 0.95rem;
+        }
+
+        .link-copy {
+            background: var(--color-bg-input);
+            border: 2px dashed var(--color-primary);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            margin-bottom: var(--spacing-xl);
+            cursor: pointer;
+            transition: all var(--transition-normal);
+        }
+
+        .link-copy:hover {
+            border-color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.05);
+        }
+
+        .generated-link {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            background: linear-gradient(
+                90deg,
+                rgba(200, 195, 250, 0.3),
+                var(--color-primary-light),
+                rgba(200, 195, 250, 0.3)
+            );
+            background-size: 200% auto;
+            background-clip: text;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: shimmer 3s linear infinite;
+            text-decoration: none;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 50%; }
+            50% { background-position: 0% 50%; }
+            100% { background-position: 200% 50%; }
+        }
+
+        .qr-section {
+            margin-top: var(--spacing-xl);
+        }
+
+        .qr-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .qr-image {
+            border-radius: var(--radius-lg);
+            border: 2px dashed var(--color-primary);
+            max-width: 100%;
+            height: auto;
+        }
+
+        .api-promo {
+            margin-top: var(--spacing-xl);
+            font-family: var(--font-heading);
+            color: var(--color-primary);
+        }
+
+        .api-link {
+            color: inherit;
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+        }
+
+        .api-link:hover {
+            color: var(--color-primary-light);
+        }
+
+        /* Features Grid */
+        .features-section {
+            width: 100%;
+            margin-bottom: var(--spacing-3xl);
+        }
+
+        .features-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            text-align: center;
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .feature-card {
+            background: var(--color-bg-surface);
+            padding: var(--spacing-2xl);
+            border-radius: var(--radius-xl);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+            transition: all var(--transition-normal);
+            text-align: center;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-0.25rem);
+            border-color: rgba(200, 195, 250, 0.2);
+        }
+
+        .feature-card-icon {
+            font-size: 3rem;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            display: block;
+        }
+
+        .feature-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--color-text-primary);
+            margin-bottom: var(--spacing-md);
+        }
+
+        .feature-card-description {
+            color: var(--color-text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Stats Section */
+        .stats-section {
+            width: 100%;
+            background: rgba(200, 195, 250, 0.05);
+            border-radius: var(--radius-xl);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-3xl);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stat-number {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .stat-label {
+            color: var(--color-text-secondary);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* About Section */
+        .about-section {
+            width: 100%;
+            max-width: 50rem;
+            text-align: center;
+        }
+
+        .about-title {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .about-description {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: var(--color-text-secondary);
+        }
+
+        /* Drag & Drop Overlay */
+        .drag-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 200;
+            visibility: hidden;
+            opacity: 0;
+            transition: all var(--transition-normal);
+        }
+
+        .drag-overlay.visible {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        .drag-message {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--color-primary);
+            text-align: center;
+            padding: var(--spacing-xl);
+            border: 3px dashed var(--color-primary);
+            border-radius: var(--radius-xl);
+            background: rgba(200, 195, 250, 0.1);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+        }
+
+        /* Toast Notifications - BOTTOM CENTER */
+        .toast {
+            position: fixed;
+            bottom: var(--spacing-xl);
+            left: 50%;
+            transform: translateX(-50%) translateY(100px);
+            max-width: 20rem;
+            background: var(--color-bg-surface);
+            border: 1px solid rgba(200, 195, 250, 0.2);
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            animation: slideUp var(--transition-normal) ease-out forwards;
+        }
+
+        .toast.hiding {
+            animation: slideDown var(--transition-normal) ease-in forwards;
+        }
+
+        .toast-content-wrapper {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-lg);
+            gap: var(--spacing-md);
+        }
+
+        .toast-icon {
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.9rem;
+            color: var(--color-text-primary);
+            font-weight: 500;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+            animation: progress 5s linear forwards;
+        }
+
+        .toast-success .toast-icon { color: #2ecc71; }
+        .toast-success .toast-progress { background: #2ecc71; }
+
+        .toast-danger .toast-icon { color: #e74c3c; }
+        .toast-danger .toast-progress { background: #e74c3c; }
+
+        .toast-info .toast-icon { color: #3498db; }
+        .toast-info .toast-progress { background: #3498db; }
+
+        .toast-warning .toast-icon { color: #f1c40f; }
+        .toast-warning .toast-progress { background: #f1c40f; }
+
+        @keyframes slideUp {
+            0% { transform: translateX(-50%) translateY(100px); opacity: 0; }
+            100% { transform: translateX(-50%) translateY(0); opacity: 1; }
+        }
+
+        @keyframes slideDown {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(100px); opacity: 0; }
+        }
+
+        @keyframes progress {
+            0% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-header {
+                padding: var(--spacing-md);
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .nav-links {
+                gap: var(--spacing-lg);
+            }
+
+            .main-content {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .upload-container,
+            .result-container {
+                padding: var(--spacing-xl);
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: var(--spacing-lg);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+                padding: var(--spacing-xs) var(--spacing-md);
+            }
+
+            .upload-container,
+            .result-container {
+                padding: var(--spacing-lg);
+            }
+
+            .hero-title {
+                font-size: 2rem;
+            }
+
+            .hero-subtitle {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Accessibility Improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus visible for better keyboard navigation */
+        .upload-btn:focus-visible,
+        .nav-link:focus-visible,
+        .file-input:focus-visible,
+        .link-copy:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-primary: #ffffff;
+                --color-bg-surface: #000000;
+                --color-text-primary: #ffffff;
+                --color-border: #ffffff;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" role="banner">
+        <div class="header-content">
+            <a href="/" class="logo" aria-label="Temp-File Home">
+                <img src="{{ url_for('static', filename='assets/icon.png') }}" alt="" class="logo-img" role="presentation">
+                <span class="logo-text">Temp-File</span>
+            </a>
+
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
+                <div onclick="showToast('This feature is under development!', 'info', 5000);" role="button" tabindex="0"
+                     onkeydown="if(event.key==='Enter'||event.key===' ') showToast('This feature is under development!', 'info', 5000);"
+                     aria-label="API - Coming soon">
+                     <span class="nav-link">
+                        <span class="material-symbols-outlined section-icon">code</span>
+                        API
+                      </span>
+                </div>
+                <a href="/contact-us" class="nav-link">
+                    <span class="material-symbols-outlined section-icon">mail_outline</span>
+                    Contact Us
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" role="main">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <h1 class="hero-title">Share Files Instantly</h1>
+            <p class="hero-subtitle">
+                Upload your files and get a shareable link in seconds. No registration required,
+                completely free, and files auto-delete after 12 hours for maximum privacy.
+            </p>
+
+            <div class="hero-features">
+                <div class="feature-item">
+                    <span class="material-symbols-outlined feature-icon">flash_on</span>
+                    <span>Instant Upload</span>
+                </div>
+                <div class="feature-item">
+                    <span class="material-symbols-outlined feature-icon">lock</span>
+                    <span>Secure & Private</span>
+                </div>
+                <div class="feature-item">
+                    <span class="material-symbols-outlined feature-icon">schedule</span>
+                    <span>Auto-Delete 12h</span>
+                </div>
+                <div class="feature-item">
+                    <span class="material-symbols-outlined feature-icon">devices</span>
+                    <span>Any Device</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Upload Section -->
+        <section class="upload-section" aria-labelledby="upload-title">
+            <div class="upload-container" id="upload-container-1">
+                <h2 class="upload-title" id="upload-title">
+                    <span class="material-symbols-outlined upload-icon">cloud_upload</span>
+                    Upload Your File
+                </h2>
+
+                <div class="file-input-wrapper">
+                    <input type="file" id="file-upload" class="file-input" multiple
+                           aria-describedby="file-help" accept="*/*">
+                    <div id="file-help" class="sr-only">Select one or more files to upload. Drag and drop is also supported.</div>
+                </div>
+
+                <div class="recaptcha-container">
+                    <div class="g-recaptcha" data-sitekey="6LfpE30rAAAAADW4Jot83mC57zu8sQNNBNvEZlt2" data-theme="dark"></div>
+                </div>
+
+                <p class="terms-agreement">
+                    By pressing 'Upload' you are agreeing to the
+                    <a href="/tos" class="terms-link">Terms of Service</a>.
+                </p>
+
+                <button class="upload-btn" type="button"
+                        aria-describedby="upload-help">Upload</button>
+                <div id="upload-help" class="sr-only">Upload selected files to get a shareable link</div>
+            </div>
+
+            <div class="result-container" id="upload-container-2" style="display: none;"
+                 aria-labelledby="result-title" role="region" aria-live="polite">
+                <h2 class="result-title" id="result-title">Your Link is Ready!</h2>
+
+                <p class="copy-suggestion">Click to copy to clipboard</p>
+
+                <div class="link-copy" onclick="copyToClipboard()" role="button" tabindex="0"
+                     onkeydown="if(event.key==='Enter'||event.key===' ') copyToClipboard();"
+                     aria-label="Copy link to clipboard">
+                    <a href="#" class="generated-link" id="url" tabindex="-1">temp-file.cloud/xxxxxxxxxx</a>
+                </div>
+
+                <div class="qr-section">
+                    <h3 class="qr-title">Or scan the QR code</h3>
+                    <img id="qr-code-image" class="qr-image" alt="QR code for file download link">
+                </div>
+
+                <p class="api-promo">
+                    Are you a developer? Try our <a href="/api" class="api-link">API</a>
+                </p>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section" aria-labelledby="features-title">
+            <h2 class="features-title" id="features-title">Why Choose Temp-File?</h2>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <span class="material-symbols-outlined feature-card-icon">security</span>
+                    <h3 class="feature-card-title">Maximum Security</h3>
+                    <p class="feature-card-description">
+                        All files are encrypted during transfer and automatically deleted after 12 hours.
+                        Your privacy is our top priority.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="material-symbols-outlined feature-card-icon">speed</span>
+                    <h3 class="feature-card-title">Lightning Fast</h3>
+                    <p class="feature-card-description">
+                        Upload files of any size instantly. Our optimized servers ensure quick upload and
+                        download speeds worldwide.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="material-symbols-outlined feature-card-icon">all_inclusive</span>
+                    <h3 class="feature-card-title">No Limits</h3>
+                    <p class="feature-card-description">
+                        Upload any file type, any size. No registration required, no hidden fees,
+                        completely free to use.
+                    </p>
+                </div>
+
+                <div class="feature-card">
+                    <span class="material-symbols-outlined feature-card-icon">share</span>
+                    <h3 class="feature-card-title">Easy Sharing</h3>
+                    <p class="feature-card-description">
+                        Get an instant shareable link and QR code. Share files via email, social media,
+                        or any messaging platform.
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section" aria-labelledby="stats-title">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number">25K+</div>
+                    <div class="stat-label">Files Shared</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">3K+</div>
+                    <div class="stat-label">Happy Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">12h</div>
+                    <div class="stat-label">Auto Delete</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Secure</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="about-section" aria-labelledby="about-title">
+            <h2 class="about-title" id="about-title">About Temp-File</h2>
+            <p class="about-description">
+                Temp-File was built with one goal in mind: making file sharing as simple and secure as possible.
+                Whether you're sharing documents with colleagues, sending photos to friends, or distributing files
+                to clients, we provide a fast, secure, and hassle-free solution that respects your privacy.
+            </p>
+        </section>
+    </main>
+
+    <!-- Drag & Drop Overlay -->
+    <div class="drag-overlay" id="drag-overlay" aria-hidden="true">
+        <p class="drag-message">Drop files here to upload</p>
+    </div>
+
+    <!-- Screen reader only content -->
+    <div class="sr-only" aria-live="polite" id="screen-reader-announcements"></div>
+
+    <script>
+        const dragOverlay = document.getElementById('drag-overlay');
+        const mainContent = document.querySelector('.main-content');
+        let dragCounter = 0;
+
+        document.addEventListener('dragover', (event) => {
+            event.preventDefault();
+            dragCounter++;
+            dragOverlay.classList.add('visible');
+            dragOverlay.setAttribute('aria-hidden', 'false');
+            mainContent.style.filter = 'blur(5px)';
+        });
+
+        document.addEventListener('dragleave', (event) => {
+            dragCounter--;
+            if (dragCounter === 0) {
+                dragOverlay.classList.remove('visible');
+                dragOverlay.setAttribute('aria-hidden', 'true');
+                mainContent.style.filter = 'none';
+            }
+        });
+
+        document.addEventListener('drop', (event) => {
+            event.preventDefault();
+            dragCounter = 0;
+            dragOverlay.classList.remove('visible');
+            dragOverlay.setAttribute('aria-hidden', 'true');
+            mainContent.style.filter = 'none';
+
+            const fileInput = document.getElementById('file-upload');
+            fileInput.files = event.dataTransfer.files;
+
+            announceToScreenReader(`${event.dataTransfer.files.length} file(s) selected for upload`);
+        });
+
+        function copyToClipboard() {
+            const link = document.getElementById('url');
+            const text = link.textContent;
+
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(function() {
+                    showToast("URL copied to clipboard!", "success", 5000);
+                    announceToScreenReader("URL copied to clipboard");
+                }).catch(function(error) {
+                    console.error('Error copying text: ', error);
+                    fallbackCopy(text);
+                });
+            } else {
+                fallbackCopy(text);
+            }
+        }
+
+        function fallbackCopy(text) {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.select();
+            try {
+                document.execCommand('copy');
+                showToast("URL copied to clipboard!", "success", 5000);
+                announceToScreenReader("URL copied to clipboard");
+            } catch (error) {
+                console.error('Fallback: Error copying text: ', error);
+                showToast("Failed to copy URL", "danger", 5000);
+            }
+            document.body.removeChild(textArea);
+        }
+
+        function toggleContainers(url, qrcode) {
+            const container1 = document.getElementById('upload-container-1');
+            const container2 = document.getElementById('upload-container-2');
+            const link = document.getElementById('url');
+            const qrImage = document.getElementById('qr-code-image');
+
+            link.textContent = `temp-file.cloud/${url}`;
+            qrImage.src = qrcode;
+
+            container2.style.display = 'block';
+            container1.style.display = 'none';
+
+            container2.focus();
+            announceToScreenReader(`Upload complete. Your file link is ready: temp-file.cloud/${url}`);
+        }
+
+        document.querySelector('.upload-btn').addEventListener('click', handleUpload);
+
+        function handleUpload() {
+
+            const uploadButton = document.querySelector('.upload-btn');
+            const fileInput = document.getElementById('file-upload');
+
+            if (fileInput.files.length > 0) {
+                uploadButton.disabled = true;
+                uploadButton.textContent = 'Uploading...';
+
+                const recaptchaResponse = grecaptcha.getResponse();
+
+                if (!recaptchaResponse) {
+                    showToast("Please complete the reCAPTCHA", "warning", 5000);
+                    announceToScreenReader("Please complete the reCAPTCHA");
+                    uploadButton.disabled = false;
+                    uploadButton.textContent = 'Upload';
+                    return;
+                }
+
+                showToast("Uploading your files...", "info", 1000);
+                announceToScreenReader("Starting file upload");
+
+                fetch('/api/captcha', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ 'g-recaptcha-response': recaptchaResponse})
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        showToast("Captcha verification failed...", "danger", 5000);
+                        throw new Error('CAPTCHA verification failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data.status === "error") {
+                        throw new Error(data.message);
+                    }
+                    const jwtToken = data.access_token;
+
+                    const formData = new FormData();
+                    for (let i = 0; i < fileInput.files.length; i++) {
+                        formData.append('files', fileInput.files[i]);
+                    }
+
+                    return fetch('/api/upload', {
+                        method: 'POST',
+                        headers: {
+                            'Authorization': `Bearer ${jwtToken}`
+                        },
+                        body: formData
+                    });
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Upload failed');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    showToast("Upload successful!", "success", 5000);
+                    const uploadedUrl = data.url;
+                    const qrCodeBase64 = data.qr;
+                    toggleContainers(uploadedUrl, qrCodeBase64);
+                    grecaptcha.reset();
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showToast(error.message, "danger", 5000);
+                    announceToScreenReader(`Upload failed: ${error.message}`);
+                })
+                .finally(() => {
+                    uploadButton.disabled = false;
+                    uploadButton.textContent = 'Upload';
+                    fileInput.value = '';
+                    grecaptcha.reset();
+                });
+            } else {
+                showToast("Please select files to upload", "warning", 5000);
+                announceToScreenReader("Please select files to upload");
+            }
+        }
+
+        let icon = {
+            success: '<span class="material-symbols-outlined">task_alt</span>',
+            danger: '<span class="material-symbols-outlined">error</span>',
+            warning: '<span class="material-symbols-outlined">warning</span>',
+            info: '<span class="material-symbols-outlined">info</span>',
+        };
+
+        const symbolIcons = {
+            info:    'info',
+            success: 'check_circle',
+            warning: 'warning',
+            error:   'error'
+        };
+
+
+        const showToast = (message = "Sample message", type = "info", duration = 4000) => {
+            if (!symbolIcons[type]) type = "info";
+
+            const content = document.createElement('div');
+            content.style.display = 'flex';
+            content.style.alignItems = 'center';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.classList.add('material-symbols-outlined');
+            iconSpan.textContent = symbolIcons[type];
+            iconSpan.style.marginRight = '8px';
+
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = message;
+            msgSpan.style.fontFamily = 'var(--font-primary)';
+
+            content.append(iconSpan, msgSpan);
+
+            Toastify({
+                node: content,
+                duration,
+                close: false,
+                gravity: 'bottom',
+                position: 'center',
+                stopOnFocus: true,
+                className: 'toast--apple-dark',
+                style: {
+                maxWidth: '400px',
+                backdropFilter: 'blur(10px)'
+                },
+                onClick: () => console.log("Toast clicked!")
+            }).showToast();
+        };
+
+        function announceToScreenReader(message) {
+            const announcer = document.getElementById('screen-reader-announcements');
+            announcer.textContent = message;
+            setTimeout(() => {
+                announcer.textContent = '';
+            }, 1000);
+        }
+
+        document.addEventListener('keydown', (event) => {
+            if ((event.key === 'Enter' || event.key === ' ') && event.target.hasAttribute('role') && event.target.getAttribute('role') === 'button') {
+                event.preventDefault();
+                event.target.click();
+            }
+        });
+
+        const srOnlyStyles = document.createElement('style');
+        srOnlyStyles.textContent = `
+            .sr-only {
+                position: absolute;
+                width: 1px;
+                height: 1px;
+                padding: 0;
+                margin: -1px;
+                overflow: hidden;
+                clip: rect(0, 0, 0, 0);
+                white-space: nowrap;
+                border: 0;
+            }
+        `;
+        document.head.appendChild(srOnlyStyles);
+    </script>
+</body>
+</html>

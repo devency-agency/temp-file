@@ -1,0 +1,9 @@
+base58==2.1.1
+Flask==3.1.0
+Flask_Caching==2.3.1
+Flask_JWT_Extended==4.7.1
+Pillow==11.1.0
+qrcode==8.1
+random_string_generator==0.0.6
+Requests==2.32.3
+Werkzeug==3.1.3

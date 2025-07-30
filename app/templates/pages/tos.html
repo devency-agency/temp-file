@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-MX62JHH1R4"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-MX62JHH1R4');
+    </script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Temp File Uploads | Temp-File</title>
+    <meta name="theme-color" content="#1f1f1f">
+    <!-- Favicon -->
+    <link rel="icon" href="{{ url_for('static', filename='assets/favicon.ico') }}" type="image/x-icon">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&family=Varela+Round&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet">
+    <!-- Toasts -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+
+    <style>
+        /* CSS Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* Color Palette */
+            --color-primary: #c8c3fa;
+            --color-primary-dark: #b4b0e2;
+            --color-primary-light: #dfdcfc;
+            --color-bg-primary: #0a0a0a;
+            --color-bg-secondary: #1c1c1c;
+            --color-bg-surface: #1e1e1e;
+            --color-bg-input: #2b2b2b;
+            --color-text-primary: #e0e0e0;
+            --color-text-secondary: #b3b3b3;
+            --color-text-muted: #5e5e5e;
+            --color-border: #333;
+            --color-success: #95eab8;
+            --color-danger: #efaca5;
+            --color-warning: #ead994;
+            --color-info: #bddaed;
+
+            /* Typography */
+            --font-primary: 'Varela Round', sans-serif;
+            --font-heading: 'Ubuntu', sans-serif;
+
+            /* Spacing */
+            --spacing-xs: 0.125rem;
+            --spacing-sm: 0.25rem;
+            --spacing-md: 0.5rem;
+            --spacing-lg: 0.75rem;
+            --spacing-xl: 1rem;
+            --spacing-2xl: 1.5rem;
+            --spacing-3xl: 2rem;
+
+            /* Border Radius */
+            --radius-sm: 0.25rem;
+            --radius-md: 0.5rem;
+            --radius-lg: 0.75rem;
+            --radius-xl: 1rem;
+
+            /* Shadows */
+            --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.5);
+            --shadow-xl: 0 12px 24px rgba(0, 0, 0, 0.6);
+
+            /* Transitions */
+            --transition-fast: 0.15s ease;
+            --transition-normal: 0.3s ease;
+            --transition-slow: 0.5s ease;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1e1e1e;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 4px;
+            border: 2px solid #1e1e1e;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            background-color: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            scrollbar-width: thin;
+            scrollbar-color: #444 #1e1e1e;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            background: linear-gradient(135deg, var(--color-bg-secondary), var(--color-bg-primary));
+            color: var(--color-text-primary);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .toast--apple-dark {
+            background: #303030;
+            color: #fff;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+            padding: 14px 20px;
+        }
+
+        .toast--apple-dark .material-symbols-outlined {
+            font-size: 20px;
+            vertical-align: middle;
+            margin-right: 8px;
+            color: var(--color-primary-dark)
+        }
+
+        .toast--apple-dark .toastify-progress-bar {
+            background: rgba(255, 255, 255, 0.7) !important;
+        }
+
+        .site-header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: rgba(31, 31, 31, 0.85);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--color-border);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            text-decoration: none;
+            transition: transform var(--transition-fast);
+        }
+
+        .logo:hover {
+            transform: scale(1.02);
+        }
+
+        .logo-img {
+            width: 2rem;
+            height: 2rem;
+            border-radius: var(--radius-md);
+        }
+
+        .logo-text {
+            font-family: var(--font-heading);
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            background: linear-gradient(135deg, var(--color-primary), var(--color-primary-light));
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: var(--spacing-xl);
+            align-items: center;
+        }
+
+        .nav-link .section-icon {
+            margin-right: 0.5rem;
+            line-height: 1;              
+        }
+
+        .section-icon {
+            font-size: 1em;
+            line-height: 1;
+            margin-right: 0.5rem;
+        }
+
+        .nav-link {
+            color: var(--color-primary);
+            text-decoration: none;
+            font-family: var(--font-heading);
+            font-weight: 500;
+            font-size: 1rem;
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--radius-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: var(--color-primary);
+            transition: all var(--transition-normal);
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover {
+            color: var(--color-primary-light);
+            background: rgba(200, 195, 250, 0.1);
+        }
+
+        .nav-link:hover::before {
+            width: 100%;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: var(--spacing-2xl) var(--spacing-md);
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Terms Section */
+        .terms-section {
+            width: 100%;
+            max-width: 50rem;
+        }
+
+        .terms-container {
+            background: var(--color-bg-surface);
+            padding: var(--spacing-3xl);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .terms-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--color-primary), transparent);
+            opacity: 0.5;
+        }
+
+        .terms-title {
+            font-family: var(--font-heading);
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-xl);
+            text-align: center;
+        }
+
+        .terms-intro {
+            font-size: 1.1rem;
+            color: var(--color-text-secondary);
+            margin-bottom: var(--spacing-2xl);
+            text-align: center;
+            line-height: 1.7;
+        }
+
+        /* Terms Content */
+        .terms-content {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-2xl);
+        }
+
+        .terms-section-item {
+            padding: var(--spacing-xl);
+            background: rgba(200, 195, 250, 0.02);
+            border-radius: var(--radius-lg);
+            border: 1px solid rgba(200, 195, 250, 0.1);
+            transition: all var(--transition-normal);
+        }
+
+        .terms-section-item:hover {
+            background: rgba(200, 195, 250, 0.04);
+            border-color: rgba(200, 195, 250, 0.15);
+        }
+
+        .section-title {
+            font-family: var(--font-heading);
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .section-icon {
+            font-size: 1.5rem;
+            color: var(--color-primary);
+        }
+
+        .section-content {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: var(--color-text-primary);
+        }
+
+        .section-content p {
+            margin-bottom: var(--spacing-md);
+        }
+
+        .section-content p:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-content a {
+            color: var(--color-primary);
+            text-decoration: underline;
+            transition: color var(--transition-fast);
+        }
+
+        .section-content a:hover {
+            color: var(--color-primary-light);
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: rgba(200, 195, 250, 0.1);
+            border-left: 4px solid var(--color-primary);
+            padding: var(--spacing-lg);
+            margin: var(--spacing-lg) 0;
+            border-radius: 0 var(--radius-md) var(--radius-md) 0;
+        }
+
+        .highlight-box p {
+            margin: 0;
+            font-weight: 500;
+            color: var(--color-text-primary);
+        }
+
+        /* Last Updated */
+        .last-updated {
+            text-align: center;
+            margin-top: var(--spacing-2xl);
+            padding-top: var(--spacing-xl);
+            border-top: 1px solid rgba(200, 195, 250, 0.1);
+            color: var(--color-text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* Table of Contents */
+        .toc {
+            background: rgba(200, 195, 250, 0.05);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-2xl);
+        }
+
+        .toc-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-primary);
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .toc-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .toc-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .toc-link {
+            color: var(--color-text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-fast);
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border-radius: var(--radius-sm);
+        }
+
+        .toc-link:hover {
+            color: var(--color-primary);
+            background: rgba(200, 195, 250, 0.1);
+        }
+
+        .toc-number {
+            color: var(--color-primary);
+            font-weight: 600;
+            min-width: 1.5rem;
+        }
+
+        /* Toast Notifications */
+        .toast {
+            position: fixed;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            max-width: 20rem;
+            background: white;
+            border-radius: var(--radius-md);
+            box-shadow: var(--shadow-lg);
+            z-index: 1000;
+            transform: translateX(110%);
+            animation: slideIn var(--transition-normal) ease-out forwards,
+                       fadeOut var(--transition-slow) ease-in forwards 4.5s;
+        }
+
+        .toast-content-wrapper {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-md);
+            gap: var(--spacing-sm);
+        }
+
+        .toast-icon {
+            font-size: 1.5rem;
+            flex-shrink: 0;
+        }
+
+        .toast-message {
+            flex: 1;
+            font-size: 0.9rem;
+            color: #000;
+            font-weight: 500;
+        }
+
+        .toast-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            animation: progress 5s linear forwards;
+        }
+
+        .toast-success { background: var(--color-success); }
+        .toast-success .toast-progress { background: #2ecc71; }
+
+        .toast-danger { background: var(--color-danger); }
+        .toast-danger .toast-progress { background: #e74c3c; }
+
+        .toast-info { background: var(--color-info); }
+        .toast-info .toast-progress { background: #3498db; }
+
+        .toast-warning { background: var(--color-warning); }
+        .toast-warning .toast-progress { background: #f1c40f; }
+
+        @keyframes slideIn {
+            0% { transform: translateX(110%); }
+            75% { transform: translateX(-5%); }
+            100% { transform: translateX(0); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; }
+        }
+
+        @keyframes progress {
+            0% { width: 100%; }
+            100% { width: 0; }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .site-header {
+                padding: var(--spacing-md);
+            }
+
+            .header-content {
+                flex-direction: column;
+                gap: var(--spacing-md);
+            }
+
+            .nav-links {
+                gap: var(--spacing-lg);
+            }
+
+            .main-content {
+                padding: var(--spacing-xl) var(--spacing-md);
+            }
+
+            .terms-container {
+                padding: var(--spacing-xl);
+            }
+
+            .terms-title {
+                font-size: 2rem;
+            }
+
+            .section-title {
+                font-size: 1.2rem;
+            }
+
+            .toast {
+                top: var(--spacing-md);
+                right: var(--spacing-md);
+                left: var(--spacing-md);
+                max-width: none;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .logo-text {
+                font-size: 1.1rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+                padding: var(--spacing-xs) var(--spacing-md);
+            }
+
+            .terms-container {
+                padding: var(--spacing-lg);
+            }
+
+            .terms-title {
+                font-size: 1.75rem;
+            }
+
+            .terms-section-item {
+                padding: var(--spacing-md);
+            }
+        }
+
+        /* Accessibility Improvements */
+        @media (prefers-reduced-motion: reduce) {
+            * {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        /* Focus visible for better keyboard navigation */
+        .nav-link:focus-visible,
+        .toc-link:focus-visible {
+            outline: 2px solid var(--color-primary);
+            outline-offset: 2px;
+        }
+
+        /* High contrast mode support */
+        @media (prefers-contrast: high) {
+            :root {
+                --color-primary: #ffffff;
+                --color-bg-surface: #000000;
+                --color-text-primary: #ffffff;
+                --color-border: #ffffff;
+            }
+        }
+
+        /* Screen reader only styles */
+        .sr-only {
+            position: absolute;
+            width: 1px;
+            height: 1px;
+            padding: 0;
+            margin: -1px;
+            overflow: hidden;
+            clip: rect(0, 0, 0, 0);
+            white-space: nowrap;
+            border: 0;
+        }
+    </style>
+</head>
+
+<body>
+    <header class="site-header" role="banner">
+        <div class="header-content">
+            <a href="/" class="logo" aria-label="Temp-File Home">
+                <img src="{{ url_for('static', filename='assets/icon.png') }}" alt="" class="logo-img" role="presentation">
+                <span class="logo-text">Temp-File</span>
+            </a>
+
+            <nav class="nav-links" role="navigation" aria-label="Main navigation">
+                <div onclick="showToast('This feature is under development!', 'info', 5000);" role="button" tabindex="0"
+                     onkeydown="if(event.key==='Enter'||event.key===' ') showToast('This feature is under development!', 'info', 5000);"
+                     aria-label="API - Coming soon">
+                     <span class="nav-link">
+                        <span class="material-symbols-outlined section-icon">code</span>
+                        API
+                      </span>
+                </div>
+                <a href="/contact-us" class="nav-link">
+                    <span class="material-symbols-outlined section-icon">mail_outline</span>
+                    Contact Us
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="main-content" role="main">
+        <section class="terms-section" aria-labelledby="terms-title">
+            <div class="terms-container">
+                <h1 class="terms-title" id="terms-title">Terms of Service</h1>
+
+                <p class="terms-intro">
+                    Welcome to Temp-File. By using our service, you agree to the following terms and conditions.
+                    Please read them carefully before using our platform.
+                </p>
+
+                <!-- Table of Contents -->
+                <nav class="toc" aria-labelledby="toc-title">
+                    <h2 class="toc-title" id="toc-title">Table of Contents</h2>
+                    <ol class="toc-list">
+                        <li class="toc-item">
+                            <span class="toc-number">1.</span>
+                            <a href="#service-description" class="toc-link">Service Description</a>
+                        </li>
+                        <li class="toc-item">
+                            <span class="toc-number">2.</span>
+                            <a href="#responsibility" class="toc-link">Responsibility and Liability</a>
+                        </li>
+                        <li class="toc-item">
+                            <span class="toc-number">3.</span>
+                            <a href="#temporary-nature" class="toc-link">Temporary Nature of Service</a>
+                        </li>
+                        <li class="toc-item">
+                            <span class="toc-number">4.</span>
+                            <a href="#user-obligations" class="toc-link">User Obligations</a>
+                        </li>
+                        <li class="toc-item">
+                            <span class="toc-number">5.</span>
+                            <a href="#changes" class="toc-link">Changes to Terms</a>
+                        </li>
+                        <li class="toc-item">
+                            <span class="toc-number">6.</span>
+                            <a href="#contact" class="toc-link">Contact Information</a>
+                        </li>
+                    </ol>
+                </nav>
+
+                <div class="terms-content">
+                    <!-- Section 1 -->
+                    <article class="terms-section-item" id="service-description">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">cloud_upload</span>
+                            1. Service Description
+                        </h2>
+                        <div class="section-content">
+                            <p>
+                                Temp-File provides a platform for temporary file upload and sharing. Files uploaded to our service
+                                are stored securely and automatically deleted after 12 hours to ensure privacy and efficient
+                                resource management.
+                            </p>
+                            <div class="highlight-box">
+                                <p>
+                                    <strong>Important:</strong> All files are automatically deleted after 12 hours without exception.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 2 -->
+                    <article class="terms-section-item" id="responsibility">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">gavel</span>
+                            2. Responsibility and Liability
+                        </h2>
+                        <div class="section-content">
+                            <p>
+                                Temp-File does not assume any legal responsibility for the files uploaded to our platform.
+                                Users are solely responsible for the content of their files and must ensure compliance with
+                                all applicable laws and regulations.
+                            </p>
+                            <p>
+                                We do not guarantee the security, integrity, or availability of uploaded files, and we are
+                                not liable for any loss, damage, or unauthorized access that may occur during the storage period.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Section 3 -->
+                    <article class="terms-section-item" id="temporary-nature">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">schedule</span>
+                            3. Temporary Nature of Service
+                        </h2>
+                        <div class="section-content">
+                            <p>
+                                Our service is designed exclusively for temporary file storage. Files are automatically
+                                deleted from our database exactly 12 hours after upload, with no possibility of recovery.
+                            </p>
+                            <p>
+                                We do not offer long-term storage, backup services, or file recovery options. Users must
+                                download their files within the 12-hour window or risk permanent loss.
+                            </p>
+                            <div class="highlight-box">
+                                <p>
+                                    <strong>Reminder:</strong> Always keep local copies of important files.
+                                    Temp-File is not suitable for permanent storage.
+                                </p>
+                            </div>
+                        </div>
+                    </article>
+
+                    <!-- Section 4 -->
+                    <article class="terms-section-item" id="user-obligations">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">person_check</span>
+                            4. User Obligations
+                        </h2>
+                        <div class="section-content">
+                            <p>By using our service, you agree to:</p>
+                            <ul style="margin-left: 1.5rem; margin-top: 0.5rem;">
+                                <li>Not upload illegal, copyrighted, or malicious content</li>
+                                <li>Not infringe on intellectual property rights</li>
+                                <li>Not use the service for harassment, spam, or harmful purposes</li>
+                                <li>Respect applicable laws and regulations in your jurisdiction</li>
+                                <li>Not attempt to bypass security measures or exploit vulnerabilities</li>
+                            </ul>
+                            <p>
+                                Violation of these obligations may result in immediate termination of access to our service
+                                and potential legal action.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Section 5 -->
+                    <article class="terms-section-item" id="changes">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">edit_document</span>
+                            5. Changes to Terms
+                        </h2>
+                        <div class="section-content">
+                            <p>
+                                We reserve the right to modify these terms at any time without prior notice. Changes will be
+                                posted on this page with an updated "Last Modified" date.
+                            </p>
+                            <p>
+                                Your continued use of the service after changes are posted constitutes acceptance of the
+                                updated terms. We recommend reviewing this page periodically.
+                            </p>
+                        </div>
+                    </article>
+
+                    <!-- Section 6 -->
+                    <article class="terms-section-item" id="contact">
+                        <h2 class="section-title">
+                            <span class="material-symbols-outlined section-icon">contact_support</span>
+                            6. Contact Information
+                        </h2>
+                        <div class="section-content">
+                            <p>
+                                If you have questions, concerns, or need to report content that violates these terms,
+                                please contact us through our <a href="/contact-us">Contact Us</a> page.
+                            </p>
+                            <p>
+                                We strive to respond to all inquiries within 48 hours and take all reports seriously.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+
+                <div class="last-updated">
+                    Last updated: <time datetime="2025-07-08">July 8, 2025</time>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Screen reader only content -->
+    <div class="sr-only" aria-live="polite" id="screen-reader-announcements"></div>
+
+    <script>
+        // Toast notification system
+        let icon = {
+            success: '<span class="material-symbols-outlined">task_alt</span>',
+            danger: '<span class="material-symbols-outlined">error</span>',
+            warning: '<span class="material-symbols-outlined">warning</span>',
+            info: '<span class="material-symbols-outlined">info</span>',
+        };
+
+        const symbolIcons = {
+            info:    'info',
+            success: 'check_circle',
+            warning: 'warning',
+            error:   'error'
+        };
+
+
+        const showToast = (message = "Sample message", type = "info", duration = 4000) => {
+            if (!symbolIcons[type]) type = "info";
+
+            const content = document.createElement('div');
+            content.style.display = 'flex';
+            content.style.alignItems = 'center';
+
+            const iconSpan = document.createElement('span');
+            iconSpan.classList.add('material-symbols-outlined');
+            iconSpan.textContent = symbolIcons[type];
+            iconSpan.style.marginRight = '8px';
+
+            const msgSpan = document.createElement('span');
+            msgSpan.textContent = message;
+            msgSpan.style.fontFamily = 'var(--font-primary)';
+
+            content.append(iconSpan, msgSpan);
+
+            Toastify({
+                node: content,
+                duration,
+                close: false,
+                gravity: 'bottom',
+                position: 'center',
+                stopOnFocus: true,
+                className: 'toast--apple-dark',
+                style: {
+                maxWidth: '400px',
+                backdropFilter: 'blur(10px)'
+                },
+                onClick: () => console.log("Toast clicked!")
+            }).showToast();
+        };
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const tocLinks = document.querySelectorAll('.toc-link');
+
+            tocLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href').substring(1);
+                    const targetElement = document.getElementById(targetId);
+
+                    if (targetElement) {
+                        targetElement.scrollIntoView({
+                            behavior: 'smooth',
+                            block: 'start'
+                        });
+                        targetElement.focus();
+                    }
+                });
+            });
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if ((event.key === 'Enter' || event.key === ' ') && event.target.hasAttribute('role') && event.target.getAttribute('role') === 'button') {
+                event.preventDefault();
+                event.target.click();
+            }
+        });
+
+        function announceToScreenReader(message) {
+            const announcer = document.getElementById('screen-reader-announcements');
+            announcer.textContent = message;
+            setTimeout(() => {
+                announcer.textContent = '';
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
